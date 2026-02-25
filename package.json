@@ -1,0 +1,22 @@
+{
+  "name": "graphql-blog",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "check": "ultracite check",
+    "fix": "ultracite fix",
+    "prepare": "husky"
+  },
+  "packageManager": "pnpm@10.11.0",
+  "devDependencies": {
+    "@biomejs/biome": "2.4.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "ultracite": "7.2.3"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,jsonc,css,scss,md,mdx}": [
+      "pnpm fix --"
+    ]
+  }
+}
