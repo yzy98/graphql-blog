@@ -5,6 +5,7 @@
   "scripts": {
     "check": "ultracite check",
     "fix": "ultracite fix",
+    "dev:web": "pnpm --filter @apps/web dev",
     "prepare": "husky"
   },
   "packageManager": "pnpm@10.11.0",
