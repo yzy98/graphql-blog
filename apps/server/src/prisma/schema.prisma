@@ -1,6 +1,12 @@
 generator client {
   provider = "prisma-client"
-  output   = "./generated"
+  output   = "./generated/prisma"
+}
+
+generator pothos {
+  provider = "prisma-pothos-types"
+  clientOutput = "./prisma" // relative path from pothos output to prisma client
+  output = "./generated/pothos-prisma-types.ts"
 }
 
 datasource db {

@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.4.1",
   "engineVersion": "55ae170b1ced7fc6ed07a15f110549408c501bb3",
   "activeProvider": "postgresql",
-  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"./generated\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Post {\n  id        Int       @id @default(autoincrement())\n  title     String\n  content   String\n  createdAt DateTime  @default(now())\n  comments  Comment[]\n}\n\nmodel Comment {\n  id        Int      @id @default(autoincrement())\n  content   String\n  createdAt DateTime @default(now())\n  postId    Int\n  post      Post     @relation(fields: [postId], references: [id])\n}\n",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"./generated/prisma\"\n}\n\ngenerator pothos {\n  provider     = \"prisma-pothos-types\"\n  clientOutput = \"./prisma\" // relative path from pothos output to prisma client\n  output       = \"./generated/pothos-prisma-types.ts\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Post {\n  id        Int       @id @default(autoincrement())\n  title     String\n  content   String\n  createdAt DateTime  @default(now())\n  comments  Comment[]\n}\n\nmodel Comment {\n  id        Int      @id @default(autoincrement())\n  content   String\n  createdAt DateTime @default(now())\n  postId    Int\n  post      Post     @relation(fields: [postId], references: [id])\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},

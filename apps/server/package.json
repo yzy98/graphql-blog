@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx src/index.ts",
     "db:seed": "tsx src/prisma/seed.ts",
+    "db:generate": "prisma generate",
     "db:studio": "prisma studio"
   },
   "packageManager": "pnpm@10.11.0",
@@ -19,10 +20,12 @@
   },
   "dependencies": {
     "@pothos/core": "^4.12.0",
+    "@pothos/plugin-prisma": "^4.14.2",
     "@prisma/adapter-pg": "^7.4.1",
     "@prisma/client": "^7.4.1",
     "dotenv": "^17.3.1",
     "graphql": "^16.13.0",
+    "graphql-scalars": "^1.25.0",
     "graphql-yoga": "^5.18.0",
     "pg": "^8.19.0"
   }
