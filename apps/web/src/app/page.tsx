@@ -1,11 +1,11 @@
-import { Test } from "@/components/test";
-import { Button } from "@/components/ui/button";
+import { NewPostDialog } from "@/components/new-post-dialog";
+import { Posts } from "@/components/posts";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <Button>Click me</Button>
-      <Test />
-    </div>
+    <main className="mx-auto max-w-2xl space-y-10 px-6 py-16">
+      <NewPostDialog />
+      <Posts />
+    </main>
   );
 }

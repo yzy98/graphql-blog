@@ -18,3 +18,38 @@ builder.queryField("posts", (t) =>
     },
   })
 );
+
+builder.queryField("post", (t) =>
+  t.prismaField({
+    type: "Post",
+    nullable: true,
+    args: {
+      id: t.arg.id({ required: true }),
+    },
+    resolve: async (query, _root, args, _ctx, _info) => {
+      return await prisma.post.findUnique({
+        ...query,
+        where: { id: Number(args.id) },
+      });
+    },
+  })
+);
+
+builder.mutationField("createPost", (t) =>
+  t.prismaField({
+    type: "Post",
+    args: {
+      title: t.arg.string({ required: true }),
+      content: t.arg.string({ required: true }),
+    },
+    resolve: async (query, _root, args, _ctx, _info) => {
+      return await prisma.post.create({
+        ...query,
+        data: {
+          title: args.title,
+          content: args.content,
+        },
+      });
+    },
+  })
+);
