@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "codegen": "graphql-codegen"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",
@@ -16,9 +17,13 @@
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "tailwind-merge": "^3.5.0"
+    "tailwind-merge": "^3.5.0",
+    "urql": "^5.0.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^6.1.2",
+    "@graphql-codegen/client-preset": "^5.2.3",
+    "@graphql-typed-document-node/core": "^3.2.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "catalog:",
     "@types/react": "^19",
