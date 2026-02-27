@@ -2,8 +2,9 @@
 
 import { ArrowLeft, MessageCircle } from "lucide-react";
 import Link from "next/link";
-import { useQuery } from "urql";
+import { useQuery, useSubscription } from "urql";
 import { graphql } from "@/gql";
+import type { CommentCreatedSubscription } from "@/gql/graphql";
 import { NewCommentDialog } from "./new-comment-dialog";
 
 const postQueryDocument = graphql(`
@@ -21,6 +22,16 @@ const postQueryDocument = graphql(`
   }
 `);
 
+const commentCreatedDocument = graphql(`
+  subscription CommentCreated($postId: ID!) {
+    commentCreated(postId: $postId) {
+      id
+      content
+      createdAt
+    }
+  } 
+`);
+
 interface Props {
   postId: string;
 }
@@ -30,6 +41,19 @@ export const Post = ({ postId }: Props) => {
     query: postQueryDocument,
     variables: { id: postId },
   });
+
+  const [{ data: newComments }] = useSubscription(
+    {
+      query: commentCreatedDocument,
+      variables: { postId },
+    },
+    (
+      prev: CommentCreatedSubscription["commentCreated"][] | undefined,
+      response
+    ) => {
+      return [response.commentCreated, ...(prev ?? [])];
+    }
+  );
 
   if (fetching) {
     return (
@@ -65,6 +89,14 @@ export const Post = ({ postId }: Props) => {
 
   const { post } = data;
 
+  const queryComments = post.comments ?? [];
+  const subOnlyComments = (newComments ?? [])
+    .filter(
+      (nc): nc is NonNullable<typeof nc> => nc !== null && nc !== undefined
+    )
+    .filter((nc) => !queryComments.some((qc) => qc.id === nc.id));
+  const allComments = [...queryComments, ...subOnlyComments];
+
   return (
     <main className="mx-auto max-w-2xl px-6 py-16">
       <Link
@@ -84,16 +116,16 @@ export const Post = ({ postId }: Props) => {
         <div className="flex items-center justify-between">
           <h2 className="flex items-center gap-2 font-semibold text-lg">
             <MessageCircle className="size-5" />
-            {post.comments?.length ?? 0} Comment
-            {(post.comments?.length ?? 0) !== 1 ? "s" : ""}
+            {allComments.length} Comment
+            {allComments.length !== 1 ? "s" : ""}
           </h2>
 
           <NewCommentDialog postId={postId} />
         </div>
 
-        {post.comments && post.comments.length > 0 && (
+        {allComments.length > 0 && (
           <ul className="mt-6 space-y-4">
-            {post.comments.map((comment) => (
+            {allComments.map((comment) => (
               <li className="rounded-lg bg-muted/50 px-4 py-3" key={comment.id}>
                 <p className="text-sm">{comment.content}</p>
                 <time className="mt-1 block text-muted-foreground text-xs">

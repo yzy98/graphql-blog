@@ -3,8 +3,9 @@
 
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
-import { useQuery } from "urql";
+import { useQuery, useSubscription } from "urql";
 import { graphql } from "@/gql/gql";
+import type { PostCreatedSubscription } from "@/gql/graphql";
 
 const postsQueryDocument = graphql(`
   query GetPosts {
@@ -21,10 +22,34 @@ const postsQueryDocument = graphql(`
   }
 `);
 
+const postCreatedDocument = graphql(`
+  subscription PostCreated {
+    postCreated {
+      id
+      title
+      content
+      comments {
+        id
+        content
+        createdAt
+      }
+    }
+  }  
+`);
+
 export function Posts() {
   const [{ data, fetching, error }] = useQuery({
     query: postsQueryDocument,
   });
+
+  const [{ data: newPosts }] = useSubscription(
+    {
+      query: postCreatedDocument,
+    },
+    (prev: PostCreatedSubscription["postCreated"][] | undefined, response) => {
+      return [response.postCreated, ...(prev ?? [])];
+    }
+  );
 
   if (fetching) {
     return (
@@ -50,9 +75,17 @@ export function Posts() {
     return <p className="text-muted-foreground">No posts yet.</p>;
   }
 
+  const { posts: queryPosts } = data;
+  const subOnlyPosts = (newPosts ?? [])
+    .filter(
+      (np): np is NonNullable<typeof np> => np !== undefined && np !== null
+    )
+    .filter((np) => !queryPosts.some((qp) => qp.id === np.id));
+  const allPosts = [...queryPosts, ...subOnlyPosts];
+
   return (
     <div className="space-y-10">
-      {data.posts.map((post) => (
+      {allPosts.map((post) => (
         <article className="group" key={post.id}>
           <Link className="block space-y-2" href={`/post/${post.id}`}>
             <h2 className="font-bold text-2xl tracking-tight group-hover:underline">
