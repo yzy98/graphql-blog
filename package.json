@@ -7,7 +7,7 @@
     "fix": "ultracite fix",
     "dev:web": "pnpm --filter @apps/web dev",
     "dev:server": "pnpm --filter @apps/server dev",
-    "dev:all": "pnpm dev:web & pnpm dev:server",
+    "dev:server-drizzle": "pnpm --filter @apps/server-drizzle dev",
     "prepare": "husky"
   },
   "packageManager": "pnpm@10.11.0",
