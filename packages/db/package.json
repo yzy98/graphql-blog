@@ -6,6 +6,10 @@
     ".": {
       "types": "./src/index.ts",
       "default": "./src/index.ts"
+    },
+    "./schema": {
+      "types": "./src/db/schema.ts",
+      "default": "./src/db/schema.ts"
     }
   },
   "scripts": {
