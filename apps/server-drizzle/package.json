@@ -12,9 +12,11 @@
   },
   "dependencies": {
     "@packages/db": "workspace:^",
+    "@pothos/core": "^4.12.0",
     "dotenv": "^17.3.1",
-    "drizzle-graphql": "^0.8.5",
+    "drizzle-orm": "^0.45.1",
     "graphql": "^16.13.0",
+    "graphql-scalars": "^1.25.0",
     "graphql-yoga": "^5.18.0"
   }
 }

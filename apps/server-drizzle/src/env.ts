@@ -10,4 +10,5 @@ const requireEnv = (name: string): string => {
 
 export const env = {
   DATABASE_URL: requireEnv("DATABASE_URL"),
+  PORT: requireEnv("PORT"),
 };
